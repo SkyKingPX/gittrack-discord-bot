@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, ChannelType } = require('discord.js');
 const { checkRepositoryLimit, checkChannelLimit } = require('../functions/limitChecker');
 const { isValidBranchPattern } = require('../functions/branchMatcher');
 
@@ -67,7 +67,7 @@ module.exports = {
     .addChannelOption(option =>
       option.setName('channel')
         .setDescription('The channel where notifications for this repository will be sent.')
-        .addChannelTypes(0) // GuildText only
+        .addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement) // Text and Announcement channels
         .setRequired(true)),
 
   async execute(interaction, prisma) {

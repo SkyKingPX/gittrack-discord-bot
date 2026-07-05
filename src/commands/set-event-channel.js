@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, ChannelType } = require('discord.js');
 
 // Event types eligible for per-event routing (non-branch specific)
 const ROUTABLE_EVENTS = [
@@ -37,7 +37,7 @@ module.exports = {
     .addChannelOption(option =>
       option.setName('channel')
         .setDescription('Channel to send this event to')
-        .addChannelTypes(0) // GuildText only
+        .addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement) // Text and Announcement channels
         .setRequired(true)
     ),
 

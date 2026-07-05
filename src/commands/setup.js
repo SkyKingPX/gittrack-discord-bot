@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, ChannelType } = require('discord.js');
 const { checkRepositoryLimit } = require('../functions/limitChecker');
 const crypto = require('crypto');
 
@@ -18,7 +18,7 @@ module.exports = {
     .addChannelOption(option =>
       option.setName('channel')
         .setDescription('The default channel for repository notifications (optional - defaults to current channel)')
-        .addChannelTypes(0) // GuildText only
+        .addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement) // Text and Announcement channels
         .setRequired(false)),
   
   async execute(interaction, prisma) {
