@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder, ChannelType } = require('discord.js');
+const { getChannelPermissionWarning } = require('../functions/permissionChecker');
 
 // Event types eligible for per-event routing (non-branch specific)
 const ROUTABLE_EVENTS = [
@@ -90,6 +91,9 @@ module.exports = {
       return;
     }
 
+    // Warn (without blocking) if the bot cannot post in the selected channel
+    const permissionWarning = getChannelPermissionWarning(channel, interaction.guild);
+
     if (repositoryId === 'no-repos' || repositoryId === 'no-match' || repositoryId === 'error') {
       await interaction.editReply('Please set up a repository first using the /setup command.');
       return;
@@ -154,7 +158,7 @@ module.exports = {
         .setFooter({ text: 'Use /status to view all event routes and branch links.' })
         .setTimestamp();
 
-      await interaction.editReply({ embeds: [embed] });
+      await interaction.editReply({ content: permissionWarning || undefined, embeds: [embed] });
     } catch (error) {
       console.error('Error setting event channel:', error);
       const embed = new EmbedBuilder()
